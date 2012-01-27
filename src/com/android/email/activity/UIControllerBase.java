@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/*
+* Modified to have 'Mark All Read Button'
+* @since 01.27.12
+* @author Dustin Jorge
+*/
+
 package com.android.email.activity;
 
 import android.app.Activity;
@@ -820,6 +826,16 @@ abstract class UIControllerBase implements MailboxListFragment.Callback,
         if (settings != null) {
             settings.setVisible(isEas && mailboxHasServerCounterpart);
         }
+
+        menu.findItem(R.id.search).setVisible(showSearchIcon);
+        menu.findItem(R.id.mailbox_settings).setVisible(isEas && mailboxHasServerCounterpart);
+        // make mark all read visible always
+        MenuItem markAllRead = menu.findItem( R.id.mark_all_read );
+        if( markAllRead != null )
+        {
+            markAllRead.setVisible(true);
+            markAllRead.setEnabled(true);
+        }
         return true;
     }
 
@@ -850,8 +866,20 @@ abstract class UIControllerBase implements MailboxListFragment.Callback,
                     MailboxSettings.start(mActivity, mailboxId);
                 }
                 return true;
+            case R.id.mark_all_read:
+                onMarkAllRead();
+                return true;
         }
         return false;
+    }
+
+    /**
+     * Marks All Messages As Read
+     */
+    private void onMarkAllRead(){
+        if( isMessageListInstalled() ){
+            getMessageListFragment().toggleAllToRead();
+        }
     }
 
     /**
