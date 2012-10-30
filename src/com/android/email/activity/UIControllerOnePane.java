@@ -572,18 +572,7 @@ class UIControllerOnePane extends UIControllerBase {
     public boolean onPrepareOptionsMenu(MenuInflater inflater, Menu menu) {
         // First, let the base class do what it has to do.
         super.onPrepareOptionsMenu(inflater, menu);
-
-        // Then override
-        final boolean messageListVisible = isMessageListInstalled();
-        if (!messageListVisible) {
-            menu.findItem(R.id.search).setVisible(false);
-            menu.findItem(R.id.compose).setVisible(false);
-            menu.findItem(R.id.refresh).setVisible(false);
-            menu.findItem(R.id.mark_all_read).setVisible(false);
-            menu.findItem(R.id.show_all_mailboxes).setVisible(false);
-            menu.findItem(R.id.mailbox_settings).setVisible(false);
-        }
-
+      
         final boolean messageViewVisible = isMessageViewInstalled();
         if (messageViewVisible) {
             final MessageOrderManager om = getMessageOrderManager();
@@ -593,6 +582,7 @@ class UIControllerOnePane extends UIControllerBase {
             menu.findItem(R.id.newer).setEnabled((om != null) && om.canMoveToNewer());
             menu.findItem(R.id.older).setEnabled((om != null) && om.canMoveToOlder());
         }
+        
         return true;
     }
 
